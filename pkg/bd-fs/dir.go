@@ -26,14 +26,14 @@ var _ = fs.NodeRequestLookuper(&dir{})
 var _ = fs.HandleReadDirAller(&dir{})
 
 type dir struct {
-	device string
+	device  string
 	sizeMap map[int]uint64
 }
 
 func (d *dir) Attr(ctx context.Context, attr *fuse.Attr) error {
-	 attr.Mode = os.ModeDir | 0755
-	 attr.Valid = 24*7*365*time.Hour
-	 return nil
+	attr.Mode = os.ModeDir | 0755
+	attr.Valid = 24 * 7 * 365 * time.Hour
+	return nil
 }
 
 func (d *dir) Lookup(ctx context.Context, req *fuse.LookupRequest, resp *fuse.LookupResponse) (fs.Node, error) {
@@ -58,8 +58,8 @@ func (d *dir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
 
 	for d, _ := range d.sizeMap {
 		var de = fuse.Dirent{
-			Name:  fmt.Sprintf("%v.m2ts", d),
-			Type:  fuse.DT_File,
+			Name: fmt.Sprintf("%02v.m2ts", d),
+			Type: fuse.DT_File,
 		}
 
 		ret = append(ret, de)
